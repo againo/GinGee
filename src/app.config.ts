@@ -5,7 +5,40 @@ export default defineAppConfig({
   window: {
     backgroundTextStyle: 'light',
     navigationBarBackgroundColor: '#fff',
-    navigationBarTitleText: 'WeChat',
-    navigationBarTextStyle: 'black'
-  }
+    navigationBarTitleText: 'GinGee',
+    navigationBarTextStyle: 'black',
+    navigationStyle: 'default'
+  },
+  tabBar: {
+    color: "#515151",
+    selectedColor: "#A28F81",
+    backgroundColor: "#fff",
+    borderStyle: "black",
+    list: [
+      {
+        pagePath: "pages/index/index",
+        iconPath: "./static/tabBar/home.svg",
+        selectedIconPath: "./static/tabBar/home.svg",
+        text: "首页",
+      },
+      {
+        pagePath: "pages/information/index",
+        iconPath: "./static/tabBar/message.svg",
+        selectedIconPath: "./static/tabBar/message.svg",
+        text: "行业信息",
+      },
+      {
+        pagePath: "pages/data/index",
+        iconPath: "./static/tabBar/data.svg",
+        selectedIconPath: "./static/tabBar/data.svg",
+        text: "报表",
+      },
+      {
+        pagePath: "pages/user/index",
+        iconPath: "./static/tabBar/user.png",
+        selectedIconPath: "./static/tabBar/user.png",
+        text: "我的",
+      },
+    ]
+  },
 })
