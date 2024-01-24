@@ -22,7 +22,8 @@
       "node_modules/@types"
     ],
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "@/components/*": ["./src/components/*"]
     }
   },
   "include": ["./src", "./types", "./config"],

@@ -1,0 +1,45 @@
+// pages/index/index.scss
+
+.scroll-view {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.table-container {
+  width: 100%;
+  overflow: auto;
+}
+
+.table {
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+  border: 1px solid #ccc;
+  overflow: hidden;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #ccc;
+  padding: 10px 0;
+}
+
+.header {
+  font-weight: bold;
+  background-color: #f0f0f0;
+}
+
+.cell {
+  width: 200px; // 设置每一个单元格宽度
+  text-align: center;
+  white-space: pre-wrap;
+  //overflow: hidden;
+  //text-overflow: ellipsis;
+  padding: 0 5px;
+  border-right: 1px solid #ccc;
+}
+
+.cell:last-child {
+  border-right: none;
+}

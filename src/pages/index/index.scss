@@ -1,0 +1,117 @@
+.div-box{
+  width: 100%;
+  height: 200rpx;
+}
+
+// border
+.border-left{
+  border-left: 2px solid black;
+}
+
+.border-right{
+  border-right: 2px solid black;
+}
+
+.border-all{
+  border: 1px solid black;
+}
+
+.border-test{
+  border: 5px solid black
+}
+
+
+// color
+.green{
+  background: green;
+}
+
+.red{
+  background: red;
+}
+
+
+.index{
+  display: 'flex'; // 带不带引号还有影响！！只有display这个值有影响
+  //width: 100%;
+  //height: 100%;
+}
+// 可以定义多个class，然后混着使用
+
+// for test
+.header {
+  left: 0; right: 0;
+  position: fixed;
+  height: 160px;
+}
+
+.top-placeholder {
+  // 填补间隙的div使用
+  height: 160px;
+}
+
+.footer {
+  left: 0; right: 0; bottom: 50rpx; // 小程序单位是rpx，能贴合
+  position: fixed;
+  height: 400rpx;
+}
+
+.xunjia{
+  bottom: 450rpx;
+  position: absolute;
+}
+
+.bottom-placeholder {
+  height: 50px;
+}
+
+.margin-top-1{
+  margin-top: 50rpx;
+}
+
+.margin-bottom-1{
+  margin-bottom: 50rpx;
+}
+
+
+.content{
+  overflow: scroll;
+  flex: 1;
+}
+
+
+//.context{
+//  align-content: space-between;
+//  justify-content: space-between;
+//}
+.context{
+  //text-align: center;
+  //text-justify: center;
+  align-items: center;
+  justify-content: center;
+  //justify-items: space-between;
+}
+
+.button{
+  width: 50%;
+  height: 50%;
+  margin-top: '5% 5% 5% 5%';
+}
+
+.div-button{
+  display: 'flex';
+  height: 100%;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10% 10%;
+}
+
+//.div-button{
+//  display: 'flex',
+//  height: '100%',
+//  width: '100%',
+//  alignItems: 'center',
+//  justifyContent: 'center',
+//  marginTop: '10% 10%',
+//}

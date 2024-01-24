@@ -1,0 +1,45 @@
+/* components/ImageWithList.scss */
+
+.image-with-list {
+  display: flex;
+  align-items: stretch; /* 让左右两侧的子元素高度相等 */
+  border: 1px solid #ccc; /* 整体边框样式 */
+}
+
+.image-container {
+  flex: 1; /* 图片占据1/4的宽度 */
+  padding: 10px; /* 适当的内边距，调整图片和列表之间的间隔 */
+  border-right: 1px solid #ccc; /* 右边框样式，与列表分隔 */
+}
+
+.image {
+  width: 100%; /* 图片宽度占满容器 */
+  height: auto; /* 保持宽高比例 */
+}
+
+.list {
+  flex: 3; /* 列表占据3/4的宽度 */
+  display: flex; /* 使用 Flex 布局 */
+  flex-direction: column; /* 垂直分布 */
+  align-items: center; /* 水平居中 */
+  overflow-y: auto; /* 垂直方向滚动 */
+  padding-left: 10px; /* 适当的内边距，调整图片和列表之间的间隔 */
+  max-height: 10vh;
+
+}
+
+.list-item {
+  display: flex;
+  justify-content: space-between;
+  width: 100%; /* 每列占据1/4的宽度 */
+  padding-left: 5px; /* 适当的内边距，调整列之间的间隔 */
+  padding-right: 20px; /* 适当的内边距，调整列之间的间隔 */
+  box-sizing: border-box; /* 盒子模型不包含外边距 */
+  text-align: center; /* 文字居中 */
+  border-bottom: 1px solid #ccc; /* 底边框样式，分隔每行 */
+  font-size: 23px;
+}
+
+.list-item-value-color{
+  color: #999999;
+}

@@ -1,0 +1,40 @@
+
+
+.button-div{
+
+}
+
+@mixin button-div-item($bgcolor){
+  width: 100px;
+  height: 150px;
+  //background-color: #D5E8F8;
+  background-color: $bgcolor;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #999999;
+  border-radius: 60px;
+}
+
+@mixin text($color){
+  font-size: 50px;
+  //color: #6C7B8B;
+  color: $color;
+}
+
+.button-div-itemA{
+  @include button-div-item(#D5E8F8)
+}
+
+.button-div-itemB{
+  @include button-div-item(#FADADD)
+}
+
+.textA {
+  @include text(#6C7B8B)
+}
+
+
+.textB {
+  @include text(#666666)
+}

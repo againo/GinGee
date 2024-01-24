@@ -1,6 +1,11 @@
 export default defineAppConfig({
   pages: [
-    'pages/index/index'
+    'pages/index/index',
+    'pages/askDetail/index',
+    'pages/incoming/index',
+    'pages/outgoing/index',
+    'pages/search/detail/index',
+    'pages/search/list/index',
   ],
   window: {
     backgroundTextStyle: 'light',
@@ -10,6 +15,7 @@ export default defineAppConfig({
     navigationStyle: 'default'
   },
   tabBar: {
+    // 导航栏高度为50px
     color: "#515151",
     selectedColor: "#A28F81",
     backgroundColor: "#fff",

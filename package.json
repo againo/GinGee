@@ -8,6 +8,7 @@
     "typescript": true,
     "css": "sass"
   },
+  "main:h5": "dist/index.esm.js",
   "scripts": {
     "build:weapp": "taro build --type weapp",
     "build:swan": "taro build --type swan",
@@ -51,6 +52,7 @@
     "@tarojs/runtime": "3.6.20",
     "@tarojs/shared": "3.6.20",
     "@tarojs/taro": "3.6.20",
+    "axios": "^1.6.5",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "taro-ui": "^3.2.2"
