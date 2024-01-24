@@ -1,4 +1,6 @@
 // 存储数据到 localStorage
+import {isNotEmpty} from "./objUtil";
+
 export function saveToLocalStorage(key, data) {
     try {
         // 将数据转换为 JSON 字符串并存储
@@ -22,3 +24,8 @@ export function getFromLocalStorage(key) {
     }
 }
 
+export function getDataWithNav(params){
+  if(isNotEmpty(params)){
+    return getFromLocalStorage(params.dataKey)
+  }
+}

@@ -7,7 +7,7 @@ import Taro from "@tarojs/taro";
 import {scanCode} from "../../tools/scanTool";
 import {nav2url} from "../../tools/navTool";
 import SearchBar from "../../components/SearchBar";
-import {goods} from "../../tools/templateData"
+import {goods,detailFormData} from "../../tools/templateData"
 
 
 // 导航路径
@@ -21,7 +21,7 @@ const uris = {
   // 查询列表
   searchList: '/pages/search/list',
   // 询价详情（商品信息）
-  askDetail: '/pages/index/askDetail',
+  askDetail: '/pages/askDetail/index',
   // 添加商品（弹窗，保持当前页面的逻辑）
   // 开单
 }
@@ -85,7 +85,15 @@ function askPrice(){
   // 先获取商品信息 再询价 这个操作冗余，应该设置错误码，根据错误码选择操作（方向）
   // const askDetail = {}
   // 渲染页面
-  nav2url(uris.askDetail, goods)
+  const params = {
+    data: detailFormData,
+    dataKey: 'goods'
+  }
+  nav2url(uris.askDetail, params)
+  // Taro.navigateTo(uris.askDetail)
+  /*Taro.navigateTo({
+    url: '/pages/askDetail/index'
+  })*/
 }
 
 function incoming(){
@@ -164,12 +172,12 @@ export default function Index() {
     >
 
       <SearchBar>{/*页面跳转*/}</SearchBar>
-      <AtButton type='primary' onClick={monitankuang}>询价</AtButton>
-      <AtButton type='primary'>开单</AtButton>
+      <AtButton type='primary' onClick={askPrice}>询价</AtButton>
+      <AtButton type='primary' onClick={monitankuang}>开单</AtButton>
       <AtButton type='primary'>进货</AtButton>
       <AtButton type='primary'>售货</AtButton>
       {/*模态框*/}
-      <AtModal isOpened>
+      <AtModal isOpened={isOpened}>
         <AtModalHeader>是否添加新商品</AtModalHeader>
         <AtModalAction> <Button onClick={monitankuang}>取消</Button> <Button>确定</Button> </AtModalAction>
       </AtModal>
