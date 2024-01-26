@@ -40,7 +40,7 @@ function MyComponent({formData}) {
                 <AtListItem title='历史低价' extraText={RMB + formData.historyLowPrice} />
                 <AtListItem title='历史高价' extraText={RMB + formData.historyHighPrice} />
                 {/*现货批次往往不会太多,直接展示*/}
-                <AtListItem title={'现货批次 & ' + '余量: ' + formData.nowBatch.reduce((a, b) => {
+                <AtListItem title={'现货批次 & ' + '余量: ' + formData.nowBatch?.reduce((a, b) => {
                     return a + b.incoming_quantity
                 }, 0)} note={<MyTable headers={batchHeader} dataSource={formData.nowBatch} />}
                 ></AtListItem>

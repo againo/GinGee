@@ -1,11 +1,13 @@
 import Taro from '@tarojs/taro';
-import {AtForm, AtInput, AtButton, AtCheckbox, AtList, AtListItem, AtFloatLayout, AtCard, AtIcon} from 'taro-ui';
+import {AtForm, AtInput, AtButton, AtCheckbox, AtList, AtListItem, AtFloatLayout, AtCard, AtIcon, AtTag} from 'taro-ui';
 import {useState} from "react";
-import {Picker, View} from "@tarojs/components";
+import {Picker, Text, View} from "@tarojs/components";
 import {shelfLifeRange,typeOptions} from "../tools/dictoryTool";
+import {arrayToObject} from "../tools/objUtil";
+import {saveToLocalStorage} from "../tools/storageTool";
 // react的组件可以不通过function，直接定义实体
-const AddGoodsForm = () => {
-  const [formData, setFormData] = useState({
+const AddGoodsForm = ({form={}}) => {
+  const [formData, setFormData] = useState(form ? form : {
     name: '',
     specification: '',
     produce_place: '',
@@ -15,6 +17,7 @@ const AddGoodsForm = () => {
     ingredient: '',
     nutrient: '',
     shelf_life: '',
+    shelf_life_unit: '',
     type: [],
     imglist: [],
     brand: '',
@@ -26,7 +29,9 @@ const AddGoodsForm = () => {
   // type 变量
   const [isTypeOptionOpen,setIsTypeOptionOpen] = useState(false); // 控制弹窗的变量
 
-  const options = typeOptions
+  const options = typeOptions;
+  const optionsShow = arrayToObject(options, 'value', 'label');
+
 
 
   /* todo 编辑商品
@@ -58,17 +63,63 @@ const AddGoodsForm = () => {
   }
 
   // 处理下拉多选多值
-  const handleTypeChange = (options) => {
+  const handleTypeChange = (option) => {
     setFormData({
       ...formData,
-      type: options,
+      type: option,
     });
   };
 
   const handleSubmit = () => {
     // 处理表单提交逻辑
     console.log('Form Data:', formData);
+    // saveToLocalStorage('goodsSubmit', formData)
+
+    // 在这里进行表单校验
+    if(checkForm()){
+      // 保存数据
+      saveToLocalStorage('goodsSubmit', formData)
+      Taro.showToast({
+          title: '提交成功',
+          icon: 'none',
+      });
+    }
+    // 跳转到添加批次
+
   };
+
+  // 表单校验
+  function checkForm(){
+      if (!formData.name) {
+          Taro.showToast({
+              title: '请填写商品名称',
+              icon: 'none',
+          });
+          return false
+      }
+      if (!formData.specification) {
+          Taro.showToast({
+              title: '请填写规格',
+              icon: 'none',
+          });
+          return false
+      }
+      if (!formData.shelf_life) {
+          Taro.showToast({
+              title: '请填写保质期',
+              icon: 'none',
+          });
+          return false
+      }
+      if (!formData.type) {
+          Taro.showToast({
+              title: '请选择分类',
+              icon: 'none',
+          });
+          return false
+      }
+      return true
+  }
 
   return (
     <AtForm onSubmit={handleSubmit}>
@@ -92,10 +143,13 @@ const AddGoodsForm = () => {
       {/*上传图片*/}
       {/*类型 下拉多选 浮动弹窗 + 多选框*/}
       <AtList>
-          <AtListItem title='请选择商品分类' extraText='todo' onClick={() => setIsTypeOptionOpen(!isTypeOptionOpen)} />
+          <AtListItem title='请选择商品分类' note={formData.type?.length > 0 ? formData.type.map((value) => (
+              <AtTag>{optionsShow[value]}</AtTag>
+          )) : null} extraText='todo：大类数值' onClick={() => setIsTypeOptionOpen(!isTypeOptionOpen)}
+          />
       </AtList>
-      <AtFloatLayout title='选择商品分类' isOpened={isTypeOptionOpen} scrollY>
-        <AtCheckbox options={options} selectedList={formData.type} onChange={(options) => {handleTypeChange(options)}} />
+      <AtFloatLayout title='选择商品分类' isOpened={isTypeOptionOpen} onClose={() => setIsTypeOptionOpen(false)} scrollY>
+        <AtCheckbox options={options} selectedList={formData.type} onChange={(option) => {handleTypeChange(option)}} />
       </AtFloatLayout>
       {/*规格 单位下拉选*/}
         <AtInput
@@ -120,10 +174,12 @@ const AddGoodsForm = () => {
               type='number'
               placeholder='请填写保质期'
               value={formData.shelf_life}
-              onChange={(value) => handleShelfLife(value)}
+              onChange={(value) => handleInputChange('shelf_life',value)}
             />
-          <Picker className='at-col at-col-3' mode='selector' range={shelfLifeRange}>
-              单位： {shelfLifeRange}<AtIcon value='chevron-down' size='30' color='#F00'></AtIcon>
+            {/*value是指定初始化时选择第几个*/}
+          <Picker className='at-col at-col-3' mode='selector' range={shelfLifeRange} value={2} onChange={(value) => handleInputChange('shelf_life_unit',shelfLifeRange[value.detail.value])}>
+              <Text>{formData.shelf_life_unit}</Text>
+              <AtIcon value='chevron-down' size='30' color='#F00'></AtIcon>
               {/*默认显示天，border显示*/}
           </Picker>
         </View>
@@ -139,7 +195,7 @@ const AddGoodsForm = () => {
       {/*营养成分*/}
         <AtInput
           name='nutrient'
-          title='保质期'
+          title='营养成分'
           type='text'
           placeholder='请填写营养成分'
           value={formData.nutrient}

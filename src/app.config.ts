@@ -6,6 +6,7 @@ export default defineAppConfig({
     'pages/outgoing/index',
     'pages/search/detail/index',
     'pages/search/list/index',
+    'pages/goods/add',
   ],
   window: {
     backgroundTextStyle: 'light',

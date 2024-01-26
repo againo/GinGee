@@ -13,7 +13,7 @@ export function nav2url(uri,params = {}){
       saveToLocalStorage(params.dataKey, params.data)
     }
     for(let key in params){
-      if(key in ['dataKey','data'])
+      if(key == 'dataKey' || key == 'data')
         continue
       if(isNotEmpty(params[key])){
         url += ('&' + key + '=' + params[key])

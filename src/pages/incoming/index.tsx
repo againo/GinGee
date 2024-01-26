@@ -2,10 +2,23 @@ import {Image, Picker, View} from '@tarojs/components'
 import './index.scss'
 import {AtButton, AtForm, AtInput, AtInputNumber, AtList, AtListItem} from "taro-ui";
 import React from "react";
-import {goods,src} from '../../tools/templateData'
+import {goods as tempGoods,src} from '../../tools/templateData'
+import {getDataWithNav, getFromLocalStorage, saveToLocalStorage} from "../../tools/storageTool";
+import Taro from "@tarojs/taro";
+import {nav2url} from "../../tools/navTool";
+import {pages} from "../../router/routers";
+import dayjs from "dayjs";
+import {getCurrentInstance} from "@tarojs/runtime";
 
 
 export default function Index() {
+
+  const today = dayjs().locale('zh-cn').format('YYYY-MM-DD');
+
+  // const params = getCurrentInstance().router.params; // ok,能获取
+  // const goods = getDataWithNav(params)
+
+  const goods = getFromLocalStorage('goodsSubmit') ? getFromLocalStorage('goodsSubmit') : tempGoods
 
   const [formData, setFormData] = React.useState({
     // 商品条码
@@ -15,7 +28,7 @@ export default function Index() {
     // 进货数量
     'incoming_quantity': '',
     // 进货日期
-    'incoming_date': '',
+    'incoming_date': today,
     // 生产日期
     'produce_date': ''
   })
@@ -31,7 +44,42 @@ export default function Index() {
   // 提交处理
   function handleSubmit(){
     console.log('submit',formData)
+    if(checkForm()){
+      saveToLocalStorage('batchSubmit',[formData])
+      Taro.showToast({
+        title: '提交成功',
+        icon: 'success',
+      });
+    }
+    // 跳转回首页
+    nav2url(pages.home)
   }
+
+  function checkForm(){
+    if (!formData.incoming_quantity) {
+      Taro.showToast({
+        title: '请填写进货数量',
+        icon: 'none',
+      });
+      return false
+    }
+    if (!formData.incoming_price) {
+      Taro.showToast({
+        title: '请填写进货价',
+        icon: 'none',
+      });
+      return false
+    }
+    if (!formData.produce_date) {
+      Taro.showToast({
+        title: '请选择生产日期',
+        icon: 'none',
+      });
+      return false
+    }
+    return true
+  }
+
 
   return (
       <View>

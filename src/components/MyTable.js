@@ -14,7 +14,7 @@ function MyComponent({ headers, dataSource }) {
         });
     }, []);
 
-    if (!headers || dataSource.length === 0) {
+    if (!headers || !dataSource || dataSource.length === 0) {
         return <Text>No data available</Text>;
     }
 

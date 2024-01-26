@@ -28,4 +28,5 @@ export function getDataWithNav(params){
   if(isNotEmpty(params)){
     return getFromLocalStorage(params.dataKey)
   }
+  return null
 }

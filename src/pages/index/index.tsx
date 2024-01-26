@@ -7,32 +7,18 @@ import Taro from "@tarojs/taro";
 import {scanCode} from "../../tools/scanTool";
 import {nav2url} from "../../tools/navTool";
 import SearchBar from "../../components/SearchBar";
-import {goods,detailFormData} from "../../tools/templateData"
-
-
-// 导航路径
-const uris = {
-  // 进货
-  incoming: '/pages/incoming/index',
-  // 出货
-  outgoing: '/pages/outgoing/index',
-  // 商品详情（带按钮）
-  searchDetail: '/pages/search/detail',
-  // 查询列表
-  searchList: '/pages/search/list',
-  // 询价详情（商品信息）
-  askDetail: '/pages/askDetail/index',
-  // 添加商品（弹窗，保持当前页面的逻辑）
-  // 开单
-}
+import {goods as tempGoods,detailFormData} from "../../tools/templateData"
+import {isNotEmpty} from "../../tools/objUtil";
+import {pages} from '../../router/routers'
+import {getFromLocalStorage} from "../../tools/storageTool";
 
 // 数据层映射
-const urisObj = {
+/*const abc = {
   incoming: {},
   searchList: {},
   searchDetail: {},
   askDetail: {},
-}
+}*/
 
 
 /**
@@ -45,102 +31,108 @@ const urisObj = {
  * }
  */
 
+export default function Index() {
 
 
-
-function handleScanCode(byScan){
-  if(byScan.errMsg != 'scanCode:ok'){
-    alert('未能识别商品')
-    return false
-  }
-  // 判断是什么码：以6打头的字符串（社会商品注册条形码）
-  if(!(byScan.charSet == 'ISO8859-1' && byScan.result.startsWith('6'))){
-    alert('扫码结果有误，请使用对应按钮')
-    return false
-  }
-  return true
-}
+    function handleScanCode(byScan){
+        if(byScan.errMsg != 'scanCode:ok'){
+            alert('未能识别商品')
+            return false
+        }
+        // 判断是什么码：以6打头的字符串（社会商品注册条形码）
+        if(!(byScan.charSet == 'ISO8859-1' && byScan.result.startsWith('6'))){
+            alert('扫码结果有误，请使用对应按钮')
+            return false
+        }
+        return true
+    }
 
 // 根据条形码查询商品信息
-function findGoodsByCode(code){
-  // http 调用接口查询
-  const goods = {
-    errMsg: 'ok'
-  }
-  if(getGoodsRes?.errMsg != 'ok'){
-    // 新增商品（询问弹窗 + 新增弹窗）
-  }
-  return goods
-}
+    function findGoodsByCode(code){
+        // 切换放到stores中
+        // http 调用接口查询
+        // const goods = tempGoods
+        const goods = getFromLocalStorage("goodsSubmit")
+        return goods
+    }
 
-function askPrice(){
-  /*console.log('询价扫码')
-  const byScan = scanCode()
-  if (!handleScanCode(byScan)) {
-    return
-  }
-  // typeScript 书写规范？
-  // 获取商品信息
-  const getGoodsRes = findGoodsByCode(byScan.result)*/
-  // 先获取商品信息 再询价 这个操作冗余，应该设置错误码，根据错误码选择操作（方向）
-  // const askDetail = {}
-  // 渲染页面
-  const params = {
-    data: detailFormData,
-    dataKey: 'goods'
-  }
-  nav2url(uris.askDetail, params)
-  // Taro.navigateTo(uris.askDetail)
-  /*Taro.navigateTo({
-    url: '/pages/askDetail/index'
-  })*/
-}
+    function askPrice(){
+        /*console.log('询价扫码')
+        const byScan = scanCode()
+        if (!handleScanCode(byScan)) {
+          return
+        }
+        // typeScript 书写规范？
+        // 获取商品信息
+        const getGoodsRes = findGoodsByCode(byScan.result)*/
+        // 先获取商品信息 再询价 这个操作冗余，应该设置错误码，根据错误码选择操作（方向）
+        // const askDetail = {}
+        // 渲染页面
+        const data = findGoodsByCode('')
+        console.log('nowbatch',getFromLocalStorage('batchSubmit'))
+        data.nowBatch = getFromLocalStorage('batchSubmit')
+        const params = {
+            data: data ? data : detailFormData,
+            dataKey: 'askDetail'
+        }
+        nav2url(pages.askDetail, params)
+    }
 
-function incoming(){
-  console.log('进货扫码')
-  const byScan = scanCode()
-  if (!handleScanCode(byScan)) {
-    return
-  }
-  const getGoodsRes = findGoodsByCode(byScan.result)
-  // 渲染页面
-  nav2url(uris.incoming,getGoodsRes)
-}
+    function incoming(){
+        /*console.log('进货扫码')
+        const byScan = scanCode()
+        if (!handleScanCode(byScan)) {
+          return
+        }
+        const getGoodsRes = findGoodsByCode(byScan.result)*/
+        // 渲染页面
+        const myCode = '12314555,商品码'
+        const goods = isGoodsExist(myCode)
+        const params = {
+            data: goods,
+            dataKey: 'goodsForIncoming'
+        }
+        nav2url(pages.incoming,params)
+    }
 
-function outgoing(){
-  console.log('售货扫码')
-  const byScan = scanCode()
-  if (!handleScanCode(byScan)) {
-    return
-  }
-  const getGoodsRes = findGoodsByCode(byScan.result)
-  // 渲染页面
-  nav2url(uris.outgoing,getGoodsRes)
-}
+    function outgoing(){
+        console.log('售货扫码')
+        const byScan = scanCode()
+        if (!handleScanCode(byScan)) {
+            return
+        }
+        const getGoodsRes = findGoodsByCode(byScan.result)
+        // 渲染页面
+        nav2url(pages.outgoing,getGoodsRes)
+    }
 
-function makeOrder(){
-  console.log('开单扫码')
+    function makeOrder(){
+        console.log('开单扫码')
+    }
 
-}
-
-function searchList(value){
-  console.log('查询列表')
-}
-
-
-export default function Index() {
+    function searchList(value){
+        console.log('查询列表')
+    }
 
   // 使用useCallBack自定义hook
   // 使用taro自带的hook方法，而不是使用taro的hook
   const [isOpened,setIsOpened] = React.useState(false)
+  const [goodCode, setGoodCode] = React.useState('')
 
-  function monitankuang(){
+  function closeModal(){
     setIsOpened(!isOpened)
   }
 
-
-  function ClickMe() {
-    console.log('click me')
+  // 判断商品是否存在，不存在时跳转到新增商品页面
+  function isGoodsExist(myCode) {
+    const goodsByCode = findGoodsByCode(myCode);
+    console.log('goods',goodsByCode)
+    if(!isNotEmpty(goodsByCode)){
+      // 弹窗到新增页面
+      setIsOpened(true)
+      return
+    }
+    return goodsByCode
   }
 
   /**
@@ -173,13 +165,15 @@ export default function Index() {
 
       <SearchBar>{/*页面跳转*/}</SearchBar>
       <AtButton type='primary' onClick={askPrice}>询价</AtButton>
-      <AtButton type='primary' onClick={monitankuang}>开单</AtButton>
-      <AtButton type='primary'>进货</AtButton>
-      <AtButton type='primary'>售货</AtButton>
+      <AtButton type='primary' onClick={makeOrder}>开单</AtButton>
+      <AtButton type='primary' onClick={incoming}>进货</AtButton>
+      <AtButton type='primary' onClick={outgoing}>售货</AtButton>
       {/*模态框*/}
       <AtModal isOpened={isOpened}>
         <AtModalHeader>是否添加新商品</AtModalHeader>
-        <AtModalAction> <Button onClick={monitankuang}>取消</Button> <Button>确定</Button> </AtModalAction>
+        <AtModalAction> <Button onClick={closeModal}>取消</Button> <Button onClick={() =>
+          nav2url(pages.addGoods, {code: goodCode})}
+        >确定</Button> </AtModalAction>
       </AtModal>
     </View>
     // </View>

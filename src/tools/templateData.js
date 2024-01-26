@@ -1,5 +1,6 @@
 export const src = 'https://img2.baidu.com/it/u=1939201416,2149832028&fm=253&fmt=auto&app=138&f=JPEG?w=640&h=426'
 export const goods = {
+    id: 1,
     name: '怡宝水',
     specification: '555ml × 24支',
     produce_place: '广东省东莞市',
@@ -153,3 +154,11 @@ export const detailFormData = {
         },
     ]
 };
+
+
+/*
+    测试用例
+    1. 跳转到添加商品，存入localStorage key：goodsSubmit
+    2. 获取添加商品，跳转到添加批次，存入localStorage key：batchSubmit
+    3. 查询商品，跳转到详情页面
+ */
